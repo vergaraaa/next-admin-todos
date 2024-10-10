@@ -1,6 +1,13 @@
 import prisma from "@/lib/prisma";
+import { Todo } from "@prisma/client";
 import { NextResponse } from "next/server";
 import * as yup from "yup";
+
+const getTodo = async (id: string): Promise<Todo | null> => {
+  const todo = await prisma.todo.findFirst({ where: { id } });
+
+  return todo;
+};
 
 export async function GET(
   _request: Request,
@@ -8,9 +15,7 @@ export async function GET(
 ) {
   const id = params.id;
 
-  const todo = await prisma.todo.findUnique({
-    where: { id: id },
-  });
+  const todo = await getTodo(id);
 
   if (!todo) {
     return NextResponse.json(
@@ -33,18 +38,16 @@ export async function PUT(
 ) {
   const id = params.id;
 
-  const todo = await prisma.todo.findUnique({
-    where: { id: id },
-  });
-
-  if (!todo) {
-    return NextResponse.json(
-      { message: `Todo with id '${id}' not found` },
-      { status: 404 }
-    );
-  }
-
   try {
+    const todo = await getTodo(id);
+
+    if (!todo) {
+      return NextResponse.json(
+        { message: `Todo with id '${id}' not found` },
+        { status: 404 }
+      );
+    }
+
     const { complete, description } = await putSchema.validate(
       await request.json()
     );
