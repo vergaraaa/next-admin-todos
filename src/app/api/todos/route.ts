@@ -1,5 +1,6 @@
 import prisma from "@/lib/prisma";
 import { NextResponse } from "next/server";
+import * as yup from "yup";
 
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url);
@@ -16,4 +17,22 @@ export async function GET(req: Request) {
   });
 
   return NextResponse.json(todos);
+}
+
+const postSchema = yup.object({
+  description: yup.string().required(),
+  complete: yup.boolean().optional().default(false),
+});
+
+export async function POST(req: Request) {
+  try {
+    const { description, complete } = await postSchema.validate(
+      await req.json()
+    );
+    const todo = await prisma.todo.create({ data: { description, complete } });
+
+    return NextResponse.json(todo, { status: 201 });
+  } catch (error) {
+    return NextResponse.json(error, { status: 400 });
+  }
 }
