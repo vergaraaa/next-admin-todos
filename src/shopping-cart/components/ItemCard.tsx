@@ -3,7 +3,7 @@
 import Image from "next/image";
 
 import { IoAddCircleOutline, IoRemove } from "react-icons/io5";
-import {} from "../actions/actions";
+import { addProductToCart, removeSingleItemFromCart } from "../actions/actions";
 
 import { useRouter } from "next/navigation";
 import { Product } from "@/products/data/products";
@@ -17,12 +17,12 @@ export const ItemCard = ({ product, quantity }: Props) => {
   const router = useRouter();
 
   function onAddToCart() {
-    //TODO: addProductToCart(product.id);
+    addProductToCart(product.id);
     router.refresh();
   }
 
   function onRemoveItem() {
-    //TODO: removeSingleItemFromCart(product.id);
+    removeSingleItemFromCart(product.id);
     router.refresh();
   }
 
@@ -51,7 +51,7 @@ export const ItemCard = ({ product, quantity }: Props) => {
         {/* Price and Add to Cart */}
         <div className="flex flex-col items-start justify-between">
           <span className="text-gray-900 dark:text-white">
-            Cantidad: {quantity}
+            Quantity: {quantity}
           </span>
           <span className="font-bold text-white">
             Total: ${(product.price * quantity).toFixed(2)}
