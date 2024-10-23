@@ -27,6 +27,7 @@ model User {
   name          String?
   email         String          @unique
   emailVerified DateTime?
+  password      String?
   image         String?
   roles         String[] @default(["user"])
   isActive      Boolean @default(true)
