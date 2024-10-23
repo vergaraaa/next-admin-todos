@@ -23,11 +23,13 @@ model Todo {
 
 // Auth.js
 model User {
-  id            String          @id @default(cuid())
+  id            String          @id @default(uuid())
   name          String?
   email         String          @unique
   emailVerified DateTime?
   image         String?
+  roles         String[] @default(["user"])
+  isActive      Boolean @default(true)
   accounts      Account[]
   sessions      Session[]
  
