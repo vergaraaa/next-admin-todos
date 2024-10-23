@@ -1,10 +1,16 @@
-import prisma from "@/lib/prisma";
+import * as yup from "yup";
 import { Todo } from "@prisma/client";
 import { NextResponse } from "next/server";
-import * as yup from "yup";
+
+import prisma from "@/lib/prisma";
+import { getUserSessionServer } from "@/auth/actions/auth-actions";
 
 const getTodo = async (id: string): Promise<Todo | null> => {
-  const todo = await prisma.todo.findFirst({ where: { id } });
+  const user = await getUserSessionServer();
+
+  if (!user) return null;
+
+  const todo = await prisma.todo.findFirst({ where: { id, userId: user.id } });
 
   return todo;
 };
