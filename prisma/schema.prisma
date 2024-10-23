@@ -19,6 +19,9 @@ model Todo {
   complete Boolean @default(false)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  userId String
+
+  user User @relation(fields: [userId], references: [id])
 }
 
 // Auth.js
@@ -33,6 +36,7 @@ model User {
   isActive      Boolean @default(true)
   accounts      Account[]
   sessions      Session[]
+  todos         Todo[]
  
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

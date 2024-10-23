@@ -21,6 +21,11 @@ npx prisma generate
 
 7. Run seed to [populate db](http://localhost:3000/api/seed)
 
+## Default user:
+
+**user**: test@gmail.com
+**password**: 123456
+
 # Prisma commands
 
 ```
